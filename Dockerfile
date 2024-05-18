@@ -1,14 +1,16 @@
-# Use an official lightweight Nginx image
+# Dockerfile
+
+# Use the official NGINX image from the Docker Hub
 FROM nginx:alpine
 
-# Remove the default server definition
+# Remove default NGINX configuration
 RUN rm /etc/nginx/conf.d/default.conf
 
-# Copy static files to Nginx
+# Copy the static website files to the NGINX html folder
 COPY . /usr/share/nginx/html
 
-# Copy the Nginx template file
-COPY default.conf.template /etc/nginx/conf.d/default.conf.template
+# Expose port 80
+EXPOSE 80
 
-# Use environment variables to configure Nginx at runtime
-CMD /bin/sh -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+# Command to run the NGINX server
+CMD ["nginx", "-g", "daemon off;"]
