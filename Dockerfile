@@ -7,11 +7,8 @@ RUN rm /etc/nginx/conf.d/default.conf
 # Copy static files to Nginx
 COPY . /usr/share/nginx/html
 
-# Replace Nginx's default configuration to use the PORT environment variable
-RUN echo "server { listen \$PORT; location / { root /usr/share/nginx/html; index index.html index.htm; }}" > /etc/nginx/conf.d/default.conf
+# Copy the Nginx template file
+COPY default.conf.template /etc/nginx/conf.d/default.conf.template
 
-# Expose the port (optional, for documentation purposes - Cloud Run ignores this)
-EXPOSE 8080
-
-# Start Nginx and keep it running in the foreground
-CMD ["nginx", "-g", "daemon off;"]
+# Use environment variables to configure Nginx at runtime
+CMD /bin/sh -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
