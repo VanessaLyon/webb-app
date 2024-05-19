@@ -1,0 +1,9 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$projet1-crun/mystoreimage', '.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$projet1-crun/mystoreimage']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['run', 'deploy', 'mypetstore536', '--image', 'gcr.io/$projet1-crun/mystoreimage', '--us-central1', 'YOUR_REGION', '--platform', 'managed']
+images:
+  - 'gcr.io/$projet1-crun/mystoreimage'
