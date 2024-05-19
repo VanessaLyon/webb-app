@@ -1,16 +1,14 @@
-# Dockerfile
-
-# Use the official NGINX image from the Docker Hub
+# Utiliser l'image de base officielle Nginx
 FROM nginx:alpine
 
-# Remove default NGINX configuration
-RUN rm /etc/nginx/conf.d/default.conf
-
-# Copy the static website files to the NGINX html folder
+# Copier les fichiers de votre site web dans le répertoire d'accueil de Nginx
 COPY . /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
+# Copier le fichier de configuration Nginx personnalisé
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Command to run the NGINX server
+# Exposer le port 8080 pour Nginx
+EXPOSE 8080
+
+# Lancer Nginx en mode non-démon
 CMD ["nginx", "-g", "daemon off;"]
